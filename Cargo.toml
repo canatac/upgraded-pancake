@@ -1,3 +1,8 @@
+[package]
+name = "api-cert-expiration"
+version = "0.1.0"
+edition = "2021"
+
 [dependencies]
 rocket = "0.4.10"
 serde = "1.0.130"
