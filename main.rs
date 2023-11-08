@@ -33,3 +33,21 @@ fn check_expiration(check_expiration_request: CheckExpirationRequest) -> CheckEx
 fn main() {
     rocket::ignite().mount("/", routes![check_expiration]).launch();
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_check_expiration() {
+        let request = CheckExpirationRequest {
+            url: "https://www.google.com".to_string(),
+            api_key: "valid_api_key".to_string(),
+        };
+
+        let response = check_expiration(request);
+
+        // Remplacez ceci par la vérification appropriée pour votre cas d'utilisation.
+        assert!(matches!(response.result, certeef::ExpirationStatus::Valid));
+    }
+}
