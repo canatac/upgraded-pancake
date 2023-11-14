@@ -4,8 +4,8 @@ version = "0.1.0"
 edition = "2021"
 
 [dependencies]
-rocket = "0.4.10"
-serde = "1.0.130"
-serde_derive = "1.0.130"
-serde_json = "1.0.72"
+rocket = { version = "=0.5.0-rc.4", features = ["json"] }
+serde = { version = "1.0.130", features = ["derive"] }
 certeef = "0.1.0"
+hyper = { version = "0.14", features = ["full"] }
+tokio = { version = "1", features = ["full"] }

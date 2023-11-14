@@ -1,53 +1,51 @@
 #![feature(proc_macro_hygiene, decl_macro)]
 
 #[macro_use] extern crate rocket;
-#[macro_use] extern crate serde_derive;
-extern crate serde_json;
-extern crate certeef;
 
-use rocket::http::Status;
-use rocket::http::RawStr;
-use rocket::request::{self, FromRequest, Request};
-use rocket::Outcome;
+use rocket::serde::json::{Json, Value, json};
+use rocket::serde::{Serialize, Deserialize};
 
 #[derive(Serialize, Deserialize)]
+#[serde(crate = "rocket::serde")]
 struct CheckExpirationRequest {
     url: String,
     api_key: String,
 }
-
+#[derive(Serialize, Deserialize)]
+#[serde(crate = "rocket::serde")]
 struct CheckExpirationResponse {
-    result: certeef::ExpirationStatus,
+    message: String,
 }
 
-#[post("/check_expiration", format = "json", data = "<check_expiration_request>")]
-fn check_expiration(check_expiration_request: CheckExpirationRequest) -> CheckExpirationResponse {
+#[get("/")]
+fn index() -> Json<CheckExpirationResponse> {
+    let res = CheckExpirationResponse {
+        message: "Hello, world!".to_string(),
+    };
+    return Json(res);
+}
+
+#[post("/check_expiration", format = "application/json", data = "<check_expiration_request>")]
+fn check_expiration(check_expiration_request: Json<CheckExpirationRequest>) -> Json<CheckExpirationResponse> {
+
     if check_expiration_request.api_key != "valid_api_key" {
-        return CheckExpirationResponse { result: certeef::ExpirationStatus::Error("Invalid API key".to_string()) };
-    }
-
-    let result = certeef::check_expiration_date_of(&check_expiration_request.url);
-    CheckExpirationResponse { result }
-}
-
-fn main() {
-    rocket::ignite().mount("/", routes![check_expiration]).launch();
-}
-
-#[cfg(test)]
-mod tests {
-    use super::*;
-
-    #[test]
-    fn test_check_expiration() {
-        let request = CheckExpirationRequest {
-            url: "https://www.google.com".to_string(),
-            api_key: "valid_api_key".to_string(),
+        let res = CheckExpirationResponse {
+            message: "Invalid API Key".to_string(),
         };
-
-        let response = check_expiration(request);
-
-        // Remplacez ceci par la vérification appropriée pour votre cas d'utilisation.
-        assert!(matches!(response.result, certeef::ExpirationStatus::Valid));
+        return Json(res)
     }
+ 
+    let result = certeef::check_expiration_date_of(&check_expiration_request.url);
+    let res = CheckExpirationResponse {
+        message: format!("Number of days before expiration: {:?}", result).to_string(),
+    };
+    return Json(res);
+}
+
+
+#[launch]
+fn rocket() -> _ {
+    rocket::build()
+    .mount("/", routes![index])
+    .mount("/check_expiration", routes![check_expiration])
 }
