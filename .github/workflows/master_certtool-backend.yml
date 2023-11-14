@@ -23,14 +23,14 @@ jobs:
       uses: docker/login-action@v2
       with:
         registry: https://acreasytraining.azurecr.io/
-        username: ${{ secrets.azureappservice_containerusername_5fb64c7839624e73a3fa7381e6f5595f }}
-        password: ${{ secrets.azureappservice_containerpassword_7e9c13bf92d643999c4445e311797626 }}
+        username: ${{ secrets.AZUREAPPSERVICE_CONTAINERUSERNAME_5FB64C7839624E73A3FA7381E6F5595F }}
+        password: ${{ secrets.AZUREAPPSERVICE_CONTAINERPASSWORD_7E9C13BF92D643999C4445E311797626 }}
 
     - name: Build and push container image to registry
       uses: docker/build-push-action@v3
       with:
         push: true
-        tags: acreasytraining.azurecr.io/${{ secrets.azureappservice_containerusername_5fb64c7839624e73a3fa7381e6f5595f }}/certtool:${{ github.sha }}
+        tags: acreasytraining.azurecr.io/${{ secrets.AZUREAPPSERVICE_CONTAINERUSERNAME_5FB64C7839624E73A3FA7381E6F5595F }}/certtool:${{ github.sha }}
         file: ./Dockerfile
 
   deploy:
@@ -43,9 +43,10 @@ jobs:
     steps:
     - name: Deploy to Azure Web App
       id: deploy-to-webapp
+
       uses: azure/webapps-deploy@v2
       with:
         app-name: 'certtool-backend'
         slot-name: 'production'
-        publish-profile: ${{ secrets.azureappservice_publishprofile_960d81cda18c47c39cc3c099529b39cf }}
-        images: 'acreasytraining.azurecr.io/${{ secrets.AzureAppService_ContainerUsername_5fb64c7839624e73a3fa7381e6f5595f }}/certtool:${{ github.sha }}'
+        publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
+        images: 'acreasytraining.azurecr.io/${{ secrets.AZUREAPPSERVICE_CONTAINERUSERNAME_5FB64C7839624E73A3FA7381E6F5595F }}/certtool:${{ github.sha }}'
