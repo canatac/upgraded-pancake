@@ -23,14 +23,14 @@ jobs:
       uses: docker/login-action@v2
       with:
         registry: https://certtool.azurecr.io/
-        username: ${{ secrets.AZUREAPPSERVICE_CONTAINERUSERNAME_5FB64C7839624E73A3FA7381E6F5595F }}
-        password: ${{ secrets.AZUREAPPSERVICE_CONTAINERPASSWORD_7E9C13BF92D643999C4445E311797626 }}
+        username: ${{ secrets.CONTAINER_USERNAME }}
+        password: ${{ secrets.CONTAINER_PASSWORD }}
 
     - name: Build and push container image to registry
       uses: docker/build-push-action@v3
       with:
         push: true
-        tags: certtool.azurecr.io/${{ secrets.AZUREAPPSERVICE_CONTAINERUSERNAME_5FB64C7839624E73A3FA7381E6F5595F }}/certtool:${{ github.sha }}
+        tags: certtool.azurecr.io/${{ secrets.CONTAINER_USERNAME }}/certtool:${{ github.sha }}
         file: ./Dockerfile
 
   deploy:
@@ -49,4 +49,4 @@ jobs:
         app-name: 'certtool-backend'
         slot-name: 'production'
         publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
-        images: 'certtool.azurecr.io/${{ secrets.AZUREAPPSERVICE_CONTAINERUSERNAME_5FB64C7839624E73A3FA7381E6F5595F }}/certtool:${{ github.sha }}'
+        images: 'certtool.azurecr.io/${{ secrets.CONTAINER_USERNAME }}/certtool:${{ github.sha }}'
