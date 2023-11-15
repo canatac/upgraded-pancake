@@ -17,28 +17,43 @@ struct CheckExpirationResponse {
     message: String,
 }
 
-#[get("/")]
-fn index() -> Json<CheckExpirationResponse> {
+async fn async_healthcheck() -> CheckExpirationResponse {
     let res = CheckExpirationResponse {
         message: "Hello, world!".to_string(),
     };
+    return res;
+}
+
+async fn async_invalid_response() -> CheckExpirationResponse {
+    let res = CheckExpirationResponse {
+        message: "Invalid API Key".to_string(),
+    };
+    return res;
+}
+
+async fn async_check(result: u32) -> CheckExpirationResponse {
+    let res = CheckExpirationResponse {
+        message: format!("Number of days before expiration: {:?}", result).to_string(),
+    };
+    return res;
+}
+
+#[get("/")]
+async fn index() -> Json<CheckExpirationResponse> {
+    let res = async_healthcheck().await;
     return Json(res);
 }
 
 #[post("/check_expiration", format = "application/json", data = "<check_expiration_request>")]
-fn check_expiration(check_expiration_request: Json<CheckExpirationRequest>) -> Json<CheckExpirationResponse> {
+async fn check_expiration(check_expiration_request: Json<CheckExpirationRequest>) -> Json<CheckExpirationResponse> {
 
     if check_expiration_request.api_key != "valid_api_key" {
-        let res = CheckExpirationResponse {
-            message: "Invalid API Key".to_string(),
-        };
+        let res = async_invalid_response().await;
         return Json(res)
     }
  
     let result = certeef::check_expiration_date_of(&check_expiration_request.url);
-    let res = CheckExpirationResponse {
-        message: format!("Number of days before expiration: {:?}", result).to_string(),
-    };
+    let res = async_check(result).await;
     return Json(res);
 }
 
