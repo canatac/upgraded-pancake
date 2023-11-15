@@ -17,4 +17,6 @@ USER ${USER}
 
 COPY . .
 
+RUN rustup override set nightly
+RUN cargo version
 RUN cargo install --path .
