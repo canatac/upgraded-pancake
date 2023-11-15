@@ -20,5 +20,6 @@ COPY . .
 RUN rustup override set nightly
 RUN cargo version
 RUN cargo install --path .
-RUN cargo build
-RUN cargo run
+
+EXPOSE 8000
+CMD ["cargo", "run"]
