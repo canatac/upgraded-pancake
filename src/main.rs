@@ -4,6 +4,10 @@
 
 use rocket::serde::json::{Json, Value, json};
 use rocket::serde::{Serialize, Deserialize};
+use rocket::http::Status;
+use rocket::local::blocking::Client;
+use rocket::http::ContentType;
+
 
 #[derive(Serialize, Deserialize)]
 #[serde(crate = "rocket::serde")]
@@ -62,5 +66,58 @@ async fn check_expiration(check_expiration_request: Json<CheckExpirationRequest>
 fn rocket() -> _ {
     rocket::build()
     .mount("/", routes![index])
-    .mount("/check_expiration", routes![check_expiration])
+    .mount("/", routes![check_expiration])
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_index() {
+        let client = Client::tracked(rocket()).expect("valid rocket instance");
+        let response = client.get("/").dispatch();
+        assert_eq!(response.status(), Status::Ok);
+        let body = response.into_string().expect("valid response body");
+        let expected_body = r#"{"message":"Hello, world!"}"#;
+        assert_eq!(body, expected_body);
+    }
+
+    #[test]
+    fn test_check_expiration_valid_api_key() {
+        let days_before_expiration = 51; // Replace with the number of days before expiration
+
+        let client = Client::tracked(rocket()).expect("valid rocket instance");
+        let request_body = r#"{"url":"www.google.com","api_key":"valid_api_key"}"#;
+        let response = client
+            .post("/check_expiration")
+            .header(ContentType::JSON)
+            .body(request_body)
+            .dispatch();
+        if response.status() != Status::Ok {
+            // Gérer l'erreur ici
+            println!("Erreur : {}", response.into_string().unwrap_or_default());
+            return;
+        }
+        assert_eq!(response.status(), Status::Ok);
+        let body = response.into_string().expect("valid response body");
+        let var_name = format!(r#"{{"message":"Number of days before expiration: {}"}}"#, days_before_expiration);
+        let expected_body = var_name;
+        assert_eq!(body, expected_body);
+    }
+
+    #[test]
+    fn test_check_expiration_invalid_api_key() {
+        let client = Client::tracked(rocket()).expect("valid rocket instance");
+        let request_body = r#"{"url":"www.google.com","api_key":"invalid_api_key"}"#;
+        let response = client
+            .post("/check_expiration")
+            .header(ContentType::JSON)
+            .body(request_body)
+            .dispatch();
+        assert_eq!(response.status(), Status::Ok);
+        let body = response.into_string().expect("valid response body");
+        let expected_body = r#"{"message":"Invalid API Key"}"#;
+        assert_eq!(body, expected_body);
+    }
 }
