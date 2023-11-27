@@ -63,7 +63,7 @@ jobs:
     - name: 'Deploy to Azure Container Instances'
       uses: 'azure/aci-deploy@v1'
       with:
-        resource-group: rgByPWSH${{ github.run_number }}
+        resource-group: rgByPWSH
         name: certtool-backend
         image: certtool.azurecr.io/certtool/certtool:latest
         ports: 8000
