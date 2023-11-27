@@ -67,7 +67,7 @@ jobs:
         name: certtool-backend
         image: certtool.azurecr.io/certtool/certtool:latest
         ports: 8000
-        dns-name-label: ${{ secrets.RESOURCE_GROUP }}${{ github.run_number }}
+        dns-name-label: rgByPWSH${{ github.run_number }}
         registry-login-server: ${{ secrets.REGISTRY_LOGIN_SERVER }}
         registry-username: ${{ secrets.CONTAINER_USERNAME }}
         registry-password: ${{ secrets.CONTAINER_PASSWORD }}
