@@ -61,6 +61,7 @@ async fn check_expiration(check_expiration_request: Json<CheckExpirationRequest>
 
 #[launch]
 fn rocket() -> _ {
+    std::env::set_var("ROCKET_PORT", "8000");
     rocket::build()
     .mount("/", routes![index])
     .mount("/", routes![check_expiration])
