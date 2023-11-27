@@ -2,11 +2,8 @@
 
 #[macro_use] extern crate rocket;
 
-use rocket::serde::json::{Json, Value, json};
+use rocket::serde::json::Json;
 use rocket::serde::{Serialize, Deserialize};
-use rocket::http::Status;
-use rocket::local::blocking::Client;
-use rocket::http::ContentType;
 
 
 #[derive(Serialize, Deserialize)]
@@ -72,6 +69,9 @@ fn rocket() -> _ {
 #[cfg(test)]
 mod tests {
     use super::*;
+    use crate::tests::rocket::http::Status;
+    use crate::tests::rocket::local::blocking::Client;
+    use crate::tests::rocket::http::ContentType;
 
     #[test]
     fn test_index() {
@@ -85,7 +85,7 @@ mod tests {
 
     #[test]
     fn test_check_expiration_valid_api_key() {
-        let days_before_expiration = 51; // Replace with the number of days before expiration
+        let days_before_expiration = 49; // Replace with the number of days before expiration
 
         let client = Client::tracked(rocket()).expect("valid rocket instance");
         let request_body = r#"{"url":"www.google.com","api_key":"valid_api_key"}"#;
