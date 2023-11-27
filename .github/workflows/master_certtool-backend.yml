@@ -60,12 +60,22 @@ jobs:
           tenant-id: ${{ secrets.AZURE_TENANT_ID }}
           subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
 
-    - name: Deploy to Azure Web App
-      id: deploy-to-webapp
-
-      uses: azure/webapps-deploy@v2
+    - name: Deploy to Azure Container Instances
+      uses: azure/container-job@v1
       with:
-        app-name: 'certtool-backend'
-        slot-name: 'production'
-        publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
-        images: 'certtool.azurecr.io/${{ secrets.CONTAINER_USERNAME }}/certtool:${{ github.sha }}'
+        container-name: certtool-backend
+        image-name: certtool.azurecr.io/certtool/certtool:latest
+        resource-group: rgByPWSH
+        location: eastus
+        dns-name-label: certtool-backend-dns
+        ports: 8000
+
+    - name: Get ACI Public IP
+      id: get-ip
+      run: |
+          ip=$(az container show --resource-group rgByPWSH --name certtool-backend --query ipAddress.ip --output tsv --api-version 2018-10-01)
+          echo "IP_ADDRESS=$ip" >> $GITHUB_ENV
+
+    - name: Display IP Address
+      run: |
+          echo "Public IP Address: ${{ env.IP_ADDRESS }}"
