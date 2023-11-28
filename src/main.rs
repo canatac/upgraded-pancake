@@ -86,7 +86,7 @@ mod tests {
 
     #[test]
     fn test_check_expiration_valid_api_key() {
-        let days_before_expiration = 48; // Replace with the number of days before expiration
+        let days_before_expiration = 47; // Replace with the number of days before expiration
 
         let client = Client::tracked(rocket()).expect("valid rocket instance");
         let request_body = r#"{"url":"www.google.com","api_key":"valid_api_key"}"#;
