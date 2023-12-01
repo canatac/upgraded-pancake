@@ -72,6 +72,4 @@ jobs:
         registry-username: ${{ secrets.CONTAINER_USERNAME }}
         registry-password: ${{ secrets.CONTAINER_PASSWORD }}
         location: 'west us'
-        vnet: certeef-vn
-        subnet: default
         os-type: Linux  
