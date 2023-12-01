@@ -4,9 +4,6 @@
 name: Build and deploy container app to Azure Web App - certtool-backend
 
 on:
-  push:
-    branches:
-      - master
   workflow_dispatch:
 
 permissions:
