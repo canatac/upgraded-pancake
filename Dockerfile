@@ -21,5 +21,6 @@ RUN rustup override set nightly
 RUN cargo version
 RUN cargo install --path .
 
-EXPOSE 80
+ENV ROCKET_ADDRESS=0.0.0.0
+EXPOSE 8000
 CMD ["cargo", "run"]
