@@ -20,7 +20,7 @@ struct CheckExpirationResponse {
 
 async fn async_healthcheck() -> CheckExpirationResponse {
     let res = CheckExpirationResponse {
-        message: "Hello, world!".to_string(),
+        message: "Hello, my new world!".to_string(),
     };
     return res;
 }
