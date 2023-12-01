@@ -66,7 +66,7 @@ jobs:
         resource-group: rgByPWSH
         name: certtool-backend
         image: certtool.azurecr.io/${{ secrets.CONTAINER_USERNAME }}/certtool:${{ github.sha }}
-        ports: 8000
+        ports: 80
         dns-name-label: rgByPWSH${{ github.run_number }}
         registry-login-server: certtool.azurecr.io
         registry-username: ${{ secrets.CONTAINER_USERNAME }}

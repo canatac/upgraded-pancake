@@ -21,5 +21,5 @@ RUN rustup override set nightly
 RUN cargo version
 RUN cargo install --path .
 
-EXPOSE 8000
+EXPOSE 80
 CMD ["cargo", "run"]
