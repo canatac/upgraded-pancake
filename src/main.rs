@@ -63,9 +63,19 @@ async fn check_expiration(check_expiration_request: Json<CheckExpirationRequest>
 fn rocket() -> _ {
     std::env::set_var("ROCKET_PORT", "80");
     rocket::build()
-    .mount("/", routes![index])
-    .mount("/", routes![check_expiration])
+    .mount("/", routes![index,check_expiration])
+    .register("/", catchers![not_found])
+    
 }
+#[catch(404)]
+fn not_found() -> Json<CheckExpirationResponse> {
+        let res = CheckExpirationResponse {
+            message: "Not found".to_string(),
+        };
+        return Json(res);
+}
+
+
 
 #[cfg(test)]
 mod tests {

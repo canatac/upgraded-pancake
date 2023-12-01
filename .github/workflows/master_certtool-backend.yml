@@ -61,6 +61,6 @@ jobs:
           script: |
             CI=true docker login -u ${{ secrets.DOCKER_HUB_USERNAME }} -p ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
             CI=true docker stop certtool
-            CI=true docker image prune -a
+            CI=true docker system prune
             CI=true docker pull canatac/certtool:latest
             CI=true docker run --name=certtool -d -p 80:80 canatac/certtool:latest
