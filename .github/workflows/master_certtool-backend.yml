@@ -43,15 +43,6 @@ jobs:
           push: true
           tags: canatac/certtool:latest
 
-      # - name: SCP files to server
-      #   uses: appleboy/scp-action@v0.1.4
-      #   with:
-      #     host: ${{ secrets.SERVER_HOST }}
-      #     username: ${{ secrets.SERVER_USERNAME }}
-      #     password: ${{ secrets.SERVER_PASSWORD }}
-      #     source: "nginx/,docker-compose.yml"
-      #     target: ~/
-
       - name: Deploy to server via SSH
         uses: appleboy/ssh-action@v0.1.4
         with:

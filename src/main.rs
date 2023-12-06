@@ -18,6 +18,18 @@ struct CheckExpirationResponse {
     message: String,
 }
 
+#[derive(Serialize, Deserialize)]
+#[serde(crate = "rocket::serde")]
+struct SelfSignedCertificateRequest {
+    api_key: String
+}
+
+#[derive(Serialize, Deserialize)]
+#[serde(crate = "rocket::serde")]
+struct SelfSignedCertificateResponse {
+    message: String,
+}
+
 async fn async_healthcheck() -> CheckExpirationResponse {
     let res = CheckExpirationResponse {
         message: "Hello, my remote new world!".to_string(),
@@ -32,9 +44,23 @@ async fn async_invalid_response() -> CheckExpirationResponse {
     return res;
 }
 
+async fn async_invalid_response_self_signed() -> SelfSignedCertificateResponse {
+    let res = SelfSignedCertificateResponse {
+        message: "Invalid API Key".to_string(),
+    };
+    return res;
+}
+
 async fn async_check(result: u32) -> CheckExpirationResponse {
     let res = CheckExpirationResponse {
         message: format!("Number of days before expiration: {:?}", result).to_string(),
+    };
+    return res;
+}
+
+async fn async_get_self_signed(result:String) -> SelfSignedCertificateResponse {
+    let res = SelfSignedCertificateResponse {
+        message: format!("RESPONSE: {:?}", result).to_string(),
     };
     return res;
 }
@@ -58,12 +84,22 @@ async fn check_expiration(check_expiration_request: Json<CheckExpirationRequest>
     return Json(res);
 }
 
-
+#[get("/self_signed_certificate")]
+async fn get_self_signed_certificate(get_self_signed_certificate_request: Json<SelfSignedCertificateRequest>) -> Json<SelfSignedCertificateResponse> {
+    if get_self_signed_certificate_request.api_key != "valid_api_key" {
+        let res = async_invalid_response_self_signed().await;
+        return Json(res)
+    }
+ 
+    let result = certeef::generate_self_signed_certificate();
+    let res = async_get_self_signed(result).await;
+    return Json(res);
+}
 #[launch]
 fn rocket() -> _ {
     std::env::set_var("ROCKET_PORT", "80");
     rocket::build()
-    .mount("/", routes![index,check_expiration])
+    .mount("/", routes![index,check_expiration,get_self_signed_certificate])
     .register("/", catchers![not_found])
     
 }
