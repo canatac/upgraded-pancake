@@ -100,7 +100,7 @@ async fn get_self_signed_certificate(get_self_signed_certificate_request: Json<S
 
 #[launch]
 fn rocket() -> _ {
-    std::env::set_var("ROCKET_PORT", "8000");
+    std::env::set_var("ROCKET_PORT", "80");
     rocket::build()
     .mount("/", routes![index,check_expiration,get_self_signed_certificate])
     .register("/", catchers![not_found])
