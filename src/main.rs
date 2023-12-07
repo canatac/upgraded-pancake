@@ -1,5 +1,3 @@
-#![feature(proc_macro_hygiene, decl_macro)]
-
 #[macro_use] extern crate rocket;
 
 use rocket::serde::json::Json;
@@ -21,7 +19,7 @@ struct CheckExpirationResponse {
 #[derive(Serialize, Deserialize)]
 #[serde(crate = "rocket::serde")]
 struct SelfSignedCertificateRequest {
-    api_key: String
+    api_key: String,
 }
 
 #[derive(Serialize, Deserialize)]
@@ -58,7 +56,7 @@ async fn async_check(result: u32) -> CheckExpirationResponse {
     return res;
 }
 
-async fn async_get_self_signed(result:String) -> SelfSignedCertificateResponse {
+async fn async_get_self_signed(result: String) -> SelfSignedCertificateResponse {
     let res = SelfSignedCertificateResponse {
         message: format!("RESPONSE: {:?}", result).to_string(),
     };
@@ -84,7 +82,7 @@ async fn check_expiration(check_expiration_request: Json<CheckExpirationRequest>
     return Json(res);
 }
 
-#[get("/self_signed_certificate")]
+#[get("/self_signed_certificate", format = "application/json", data = "<get_self_signed_certificate_request>")]
 async fn get_self_signed_certificate(get_self_signed_certificate_request: Json<SelfSignedCertificateRequest>) -> Json<SelfSignedCertificateResponse> {
     if get_self_signed_certificate_request.api_key != "valid_api_key" {
         let res = async_invalid_response_self_signed().await;
@@ -92,12 +90,17 @@ async fn get_self_signed_certificate(get_self_signed_certificate_request: Json<S
     }
  
     let result = certeef::generate_self_signed_certificate();
+    let result = match result {
+        Ok(res) => res.to_string(),
+        Err(e) => format!("Error: {:?}", e),
+    };
     let res = async_get_self_signed(result).await;
     return Json(res);
 }
+
 #[launch]
 fn rocket() -> _ {
-    std::env::set_var("ROCKET_PORT", "80");
+    std::env::set_var("ROCKET_PORT", "8000");
     rocket::build()
     .mount("/", routes![index,check_expiration,get_self_signed_certificate])
     .register("/", catchers![not_found])
