@@ -3,6 +3,8 @@
 use rocket::serde::json::Json;
 use rocket::serde::{Serialize, Deserialize};
 
+mod authentication;
+mod subscription;
 
 #[derive(Serialize, Deserialize)]
 #[serde(crate = "rocket::serde")]
@@ -102,9 +104,8 @@ async fn get_self_signed_certificate(get_self_signed_certificate_request: Json<S
 fn rocket() -> _ {
     std::env::set_var("ROCKET_PORT", "80");
     rocket::build()
-    .mount("/", routes![index,check_expiration,get_self_signed_certificate])
+    .mount("/", routes![index,check_expiration,get_self_signed_certificate, subscription::subscribe, subscription::verify])
     .register("/", catchers![not_found])
-    
 }
 #[catch(404)]
 fn not_found() -> Json<CheckExpirationResponse> {
@@ -113,8 +114,6 @@ fn not_found() -> Json<CheckExpirationResponse> {
         };
         return Json(res);
 }
-
-
 
 #[cfg(test)]
 mod tests {
