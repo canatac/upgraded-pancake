@@ -9,11 +9,17 @@
             font-family: monospace;
             white-space: pre;
         }
-        @keyframes bounce {
-            0% { transform: translateY(0); }
-            50% { transform: translateY(-20px); }
-            100% { transform: translateY(0); }
-        }
+        footer {
+            position: fixed;
+            left: 0;
+            bottom: 0;
+            width: 100%;
+            background-color: black;
+            color: lime;
+            text-align: center;
+            padding: 10px;
+            font-family: monospace;
+        } 
         @media (max-width: 600px) {
             body {
                 font-size: 14px;
@@ -39,51 +45,103 @@
     </pre>
     <pre id="content">$ </pre>
     </footer>
-    <footer id="footer" style="position: fixed; left: 0; bottom: 0; width: 100%; background-color: black; color: lime; text-align: center; padding: 10px; font-family: monospace; opacity: 0; transition: opacity 2s;">
+    <footer id="footer" style="position: fixed; left: 0; bottom: 0; width: 100%; background-color: black; color: lime; text-align: center; padding: 10px; font-family: monospace; ">
     </footer>
     <script>
         var texts = [
             "🔒 Working with TLS certificates can be a daunting task. It requires a deep understanding of complex concepts such as asymmetric cryptography, certificate authorities, and trust chains. Managing certificates involves generating, renewing, and revoking them, all while ensuring they are securely stored. Configuring servers to use TLS certificates can be tricky, and striking a balance between security and compatibility is a constant challenge. Moreover, configuration errors can lead to security vulnerabilities, and forgetting to renew a certificate can result in service interruptions. 😓",
             "😊 But what if there was a better way? Our project simplifies the process of working with TLS certificates, saving you time and reducing the risk of errors. With our easy-to-use tools and clear instructions, you can focus on what you do best: developing great applications. Say goodbye to the headaches of TLS certificates and hello to a smoother, more secure development experience. 🚀",
-            "made in 🗼 with ❤️ in December 2023",
-            "🎅",
-        ];
-        var delay = 70; // Delay in milliseconds
+            "made in 🗼 with ❤️ in December 2023 🎅",
+        ]; 
+// This array contains the texts that will be displayed on the screen.
+// Each element of the array represents a separate paragraph.
+
+        var delay = 50;
+// The delay in milliseconds between the display of each character.
+
         var container = document.getElementById('content');
+// This is the HTML element where the text will be displayed. 
+// 'content' is the ID of this element in the HTML file.
+
         var footer = document.getElementById('footer');
+// This is the HTML element that represents the footer. 
+// 'footer' is the ID of this element in the HTML file.
+
         var index = 0;
+// This is an index that points to the current character of the text being displayed.
+
         var textIndex = 0;
+// This is an index that points to the current paragraph of the text array.
+
         var lineLength = 0;
-        var maxLineLength = 80; // Adjust this value to fit your layout
+// This is a variable that counts the number of characters in the current line. 
+// It is used to determine when to move to the next line.
+
+        var maxLineLength = 80; 
+// This is the maximum length of a line. 
+// When lineLength reaches this value, the text moves to the next line.        
 
         function addCharacter() {
             var char = texts[textIndex][index];
+        // This is the maximum length of a line. 
+        // When lineLength reaches this value, the text moves to the next line.
+
             container.textContent += texts[textIndex][index];
             index++;
             lineLength++;
             if (char === '\n') {
+        // If the current character is a newline character ('\n'), 
+        // it resets the lineLength to 0 because a new line has started.
                 lineLength = 0;
             } else if (lineLength >= maxLineLength && char === ' ') {
-                container.textContent += '\\\n >';
+        // If the current line length has reached or exceeded the maximum line length 
+        // and the current character is a space, it adds a newline character ('\n') 
+        // and a '> ' to the text content to start a new line, and resets the lineLength to 0.
+                container.textContent += '\\\n > ';
                 lineLength = 0;
             }
             if (index < texts[textIndex].length) {
+        // If the current character index is less than the length of the current text, 
+        // it schedules the next character to be added after a delay.
                 setTimeout(addCharacter, delay);
             } else if (textIndex < texts.length - 1) {
+        // If the current text index is less than the total number of texts, 
+        // it adds a newline and a '$ ' to the text content to start a new paragraph, 
+        // and resets the character index, the text index, and the line length.
                 container.textContent += '\n$ ';
                 index = 0;
                 textIndex++;
                 lineLength = 0;
                 if (textIndex === 2) {
+                    addCharacterToFooter();
                     footer.textContent = container.textContent.split('\n').pop();
                     container.textContent = container.textContent.split('\n').slice(0, -1).join('\n') + '\n$ ';
-                    footer.style.opacity = '1';
-                    footer.style.animation = 'bounce 1s infinite';
-
+                    setTimeout(removeCharacter, delay);
+                }else {
+                    setTimeout(addCharacter, delay);
                 }
-                setTimeout(addCharacter, delay);
+            }else  {
+                    removeCharacter();
             }
         }
+
+        function removeCharacter() {
+            if (footer.textContent.length > 0) {
+                footer.textContent = footer.textContent.slice(0, -1);
+                setTimeout(removeCharacter, delay);
+            } else {
+                index = 0;
+                setTimeout(addCharacterToFooter, delay);
+            }
+        }
+
+        function addCharacterToFooter() {
+            if (index < texts[2].length) {
+                footer.textContent += texts[2][index];
+                index++;
+                setTimeout(addCharacterToFooter, delay);
+            }
+        }        
 
         addCharacter();
     </script>
