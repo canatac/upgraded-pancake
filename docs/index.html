@@ -64,13 +64,13 @@
             if (char === '\n') {
                 lineLength = 0;
             } else if (lineLength >= maxLineLength && char === ' ') {
-                container.textContent += '\\n';
+                container.textContent += '\\\n >';
                 lineLength = 0;
             }
             if (index < texts[textIndex].length) {
                 setTimeout(addCharacter, delay);
             } else if (textIndex < texts.length - 1) {
-                container.textContent += '\\n$ ';
+                container.textContent += '\n$ ';
                 index = 0;
                 textIndex++;
                 lineLength = 0;
