@@ -9,7 +9,11 @@
             font-family: monospace;
             white-space: pre;
         }
-
+        @keyframes bounce {
+            0% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+            100% { transform: translateY(0); }
+        }
         @media (max-width: 600px) {
             body {
                 font-size: 14px;
@@ -36,7 +40,6 @@
     <pre id="content">$ </pre>
     </footer>
     <footer id="footer" style="position: fixed; left: 0; bottom: 0; width: 100%; background-color: black; color: lime; text-align: center; padding: 10px; font-family: monospace; opacity: 0; transition: opacity 2s;">
-        made in 🗼 with ❤️ - 2023
     </footer>
     <script>
         var texts = [
@@ -61,13 +64,13 @@
             if (char === '\n') {
                 lineLength = 0;
             } else if (lineLength >= maxLineLength && char === ' ') {
-                container.textContent += '\n';
+                container.textContent += '\\n';
                 lineLength = 0;
             }
             if (index < texts[textIndex].length) {
                 setTimeout(addCharacter, delay);
             } else if (textIndex < texts.length - 1) {
-                container.textContent += '\n$ ';
+                container.textContent += '\\n$ ';
                 index = 0;
                 textIndex++;
                 lineLength = 0;
@@ -75,6 +78,8 @@
                     footer.textContent = container.textContent.split('\n').pop();
                     container.textContent = container.textContent.split('\n').slice(0, -1).join('\n') + '\n$ ';
                     footer.style.opacity = '1';
+                    footer.style.animation = 'bounce 1s infinite';
+
                 }
                 setTimeout(addCharacter, delay);
             }
