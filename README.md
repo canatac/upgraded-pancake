@@ -3,7 +3,6 @@
 
 API for certeef features
 
-This project uses massively Github and Azure services.
-For example, this line is edited through Github mobile app.
-After saving, CICD workflow in Github Actions should be triggered.
+This project uses massively cloud services like Github, Github Actions, Azure and AWS services.
+
 

@@ -58,12 +58,25 @@ async fn check_expiration(check_expiration_request: Json<CheckExpirationRequest>
     return Json(res);
 }
 
+#[post("/get_self_signed_certificate", format = "application/json", data = "<get_certificate_request>")]
+async fn get_self_signed_certificate(get_certificate_request: Json<GetCertificateRequest>) -> Json<GetCertificateResponse> {
+
+    if get_certificate_request.api_key != "valid_api_key" {
+        let res = async_invalid_response().await;
+        return Json(res)
+    }
+
+    let certificate = certeef::get_self_signed_certificate(&get_certificate_request.domain_name);
+    let res = async_get_certificate(certificate).await;
+    return Json(res);
+}
+
 
 #[launch]
 fn rocket() -> _ {
     std::env::set_var("ROCKET_PORT", "80");
     rocket::build()
-    .mount("/", routes![index,check_expiration])
+    .mount("/", routes![index,check_expiration,get_self_signed_certificate])
     .register("/", catchers![not_found])
     
 }
@@ -74,6 +87,8 @@ fn not_found() -> Json<CheckExpirationResponse> {
         };
         return Json(res);
 }
+
+
 
 #[cfg(test)]
 mod tests {
