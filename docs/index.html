@@ -43,24 +43,28 @@
 </head>
 <body>
     <pre id="title">
-        ::::::::  :::::::::: ::::::::: ::::::::::: :::::::::: :::::::::: :::::::::: 
-        :+:    :+: :+:        :+:    :+:    :+:     :+:        :+:        :+:         
-       +:+        +:+        +:+    +:+    +:+     +:+        +:+        +:+          
-      +#+        +#++:++#   +#++:++#:     +#+     +#++:++#   +#++:++#   :#::+::#      
-     +#+        +#+        +#+    +#+    +#+     +#+        +#+        +#+            
-    #+#    #+# #+#        #+#    #+#    #+#     #+#        #+#        #+#             
-    ########  ########## ###    ###    ###     ########## ########## ###                  
+               
     </pre>
-    <pre id="content">$ </pre>
-    <header style="background-color: black; color: lime; padding: 10px; font-family: monospace;">
+
+    <header style="display: flex; justify-content: space-between; align-items: center; background-color: black; color: lime; padding: 10px; font-family: monospace;">
+        <pre style="margin: 0;">
+            ::::::::  :::::::::: ::::::::: ::::::::::: :::::::::: :::::::::: :::::::::: 
+            :+:    :+: :+:        :+:    :+:    :+:     :+:        :+:        :+:         
+           +:+        +:+        +:+    +:+    +:+     +:+        +:+        +:+          
+          +#+        +#++:++#   +#++:++#:     +#+     +#++:++#   +#++:++#   :#::+::#      
+         +#+        +#+        +#+    +#+    +#+     +#+        +#+        +#+            
+        #+#    #+# #+#        #+#    #+#    #+#     #+#        #+#        #+#             
+        ########  ########## ###    ###    ###     ########## ########## ###   
+        </pre> 
         <nav>
             <ul style="list-style-type: none; margin: 0; padding: 0; overflow: hidden;">
                 <li style="float: left; margin-right: 10px;"><a href="#docs" style="color: lime; text-decoration: none;">Docs</a></li>
-                <li style="float: left; margin-right: 10px;"><a href="https://github.com/canatac/upgraded-pancake" target="_blank" style="color: lime; text-decoration: none;"><img src="https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png" alt="GitHub Icon" style="height: 20px;"></a></li>
+                <li style="float: left; margin-right: 10px;"><a href="https://github.com/canatac/upgraded-pancake" target="_blank" style="color: lime; text-decoration: none;"><svg xmlns="http://www.w3.org/2000/svg" fill="lime" viewBox="0 0 24 24" width="20px" height="20px"><path d="M0 0h24v24H0z" fill="none"/><path d="M12 2C6.48 2 2 6.48 2 12c0 4.418 2.865 8.166 6.839 9.489.5.09.682-.218.682-.484 0-.237-.009-.868-.014-1.704-2.782.605-3.369-1.34-3.369-1.34-.454-1.156-1.11-1.462-1.11-1.462-.908-.62.069-.608.069-.608 1.004.07 1.532 1.03 1.532 1.03.892 1.53 2.341 1.088 2.91.833.091-.647.349-1.086.635-1.335-2.22-.253-4.555-1.11-4.555-4.943 0-1.091.39-1.984 1.03-2.682-.103-.253-.447-1.27.098-2.645 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0 1 12 7.833c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.026 2.747-1.026.547 1.375.203 2.392.1 2.645.64.698 1.026 1.59 1.026 2.682 0 3.841-2.337 4.687-4.565 4.934.359.31.678.92.678 1.852 0 1.335-.012 2.415-.012 2.741 0 .269.18.577.688.479C19.138 20.164 22 16.416 22 12c0-5.52-4.48-10-10-10z"/></svg></a></li>
                 <li style="float: left; margin-right: 10px;"><a href="#about" style="color: lime; text-decoration: none;">About</a></li>
             </ul>
         </nav>
     </header>
+    <pre id="content">$ </pre>
     <footer id="footer" style="position: fixed; left: 0; bottom: 0; width: 100%; background-color: black; color: lime; text-align: center; padding: 10px; font-family: monospace; ">
     </footer>
     <script>
@@ -80,15 +84,15 @@
             "- Security: Enhance security by providing developers with controlled access to certificate data, minimizing potential vulnerabilities.",
             "- Reliability: Ensure the reliability of SSL/TLS configurations with real-time insights, empowering developers to make informed decisions.",
             "- Scalability: Scale your SSL/TLS management effortlessly as your infrastructure grows, supported by robust API capabilities.",
-            "- Transform the way you manage SSL/TLS certificates. Try [Your Product Name] today and elevate your development workflow."
+            "- Transform the way you manage SSL/TLS certificates. Try [Your Product Name] today and elevate your development workflow.",
 
-            "[Try for Free / Learn More]"
+            "[Try for Free / Learn More]",
             "made in 🗼 with ❤️ in December 2023 🎅",
         ]; 
 // This array contains the texts that will be displayed on the screen.
 // Each element of the array represents a separate paragraph.
 
-        var delay = 50;
+        var delay = 10;
 // The delay in milliseconds between the display of each character.
 
         var container = document.getElementById('content');
@@ -113,17 +117,28 @@
 // This is the maximum length of a line. 
 // When lineLength reaches this value, the text moves to the next line.        
 
+        function handleEnterKey(event) {
+            if (event.key === 'Enter') {
+                isWaitingForEnter = false;
+                //container.textContent += '\n';
+				container.textContent += '\n$ ';
+                window.removeEventListener('keydown', handleEnterKey);
+				addCharacter();
+            }
+        }
+
         function addCharacter() {
+		    if (isWaitingForEnter) return;
             var char = texts[textIndex][index];
         // This is the maximum length of a line. 
         // When lineLength reaches this value, the text moves to the next line.
-
             container.textContent += texts[textIndex][index];
             index++;
             lineLength++;
             if (char === '\n') {
         // If the current character is a newline character ('\n'), 
         // it resets the lineLength to 0 because a new line has started.
+
                 lineLength = 0;
             } else if (lineLength >= maxLineLength && char === ' ') {
         // If the current line length has reached or exceeded the maximum line length 
@@ -140,8 +155,12 @@
         // If the current text index is less than the total number of texts, 
         // it adds a newline and a '$ ' to the text content to start a new paragraph, 
         // and resets the character index, the text index, and the line length.
-                container.textContent += '\n$ ';
-                index = 0;
+		        container.innerHTML += "'Enter' to continue <span class='prompt'>|</span>";
+                isWaitingForEnter = true;
+                window.addEventListener('keydown', handleEnterKey);
+				
+                
+				index = 0;
                 textIndex++;
                 lineLength = 0;
                 if (textIndex === texts.length - 1) {
@@ -170,6 +189,11 @@
         function addCharacterToFooter() {
         if (index < texts[texts.length - 1].length) {
             let currentText = texts[texts.length - 1].substring(index, index + 11);
+            if (texts[texts.length - 1][index] === '\n') {
+                footer.innerHTML += "'Enter' to continue <span class='prompt'>|</span>";
+                isWaitingForEnter = true;
+                window.addEventListener('keydown', handleEnterKey);
+            }
             if (currentText === "Try for Free") {
                 footer.innerHTML += '<a href="#" onclick="tryForFree(); return false;" style="text-decoration: underline;">' + currentText + '</a>';
                 index += 11;
@@ -193,7 +217,8 @@
             // Insérez ici le code à exécuter lorsque l'utilisateur clique sur "Learn More"
             console.log("Learn More clicked");
         }
-
+		
+		isWaitingForEnter = false;
         addCharacter();
     </script>
 </body>
