@@ -115,7 +115,7 @@
                 index = 0;
                 textIndex++;
                 lineLength = 0;
-                if (textIndex === 2) {
+                if (textIndex === texts.length - 1) {
                     addCharacterToFooter();
                     footer.textContent = container.textContent.split('\n').pop();
                     container.textContent = container.textContent.split('\n').slice(0, -1).join('\n') + '\n$ ';
@@ -139,8 +139,8 @@
         }
 
         function addCharacterToFooter() {
-            if (index < texts[2].length) {
-                footer.textContent += texts[2][index];
+            if (index < texts[texts.length - 1].length) {
+                footer.textContent += texts[texts.length - 1][index];
                 index++;
                 setTimeout(addCharacterToFooter, delay);
             }
