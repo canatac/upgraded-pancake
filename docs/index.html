@@ -20,6 +20,14 @@
             padding: 10px;
             font-family: monospace;
         } 
+        #title {
+            text-align: center;
+            transform: scale(0.5);
+            transform-origin: center;
+        }
+        #content {
+            text-align: left;
+        }
         @media (max-width: 600px) {
             body {
                 font-size: 14px;
@@ -44,16 +52,37 @@
     ########  ########## ###    ###    ###     ########## ########## ###                  
     </pre>
     <pre id="content">$ </pre>
-    </footer>
+    <header style="background-color: black; color: lime; padding: 10px; font-family: monospace;">
+        <nav>
+            <ul style="list-style-type: none; margin: 0; padding: 0; overflow: hidden;">
+                <li style="float: left; margin-right: 10px;"><a href="#docs" style="color: lime; text-decoration: none;">Docs</a></li>
+                <li style="float: left; margin-right: 10px;"><a href="https://github.com/canatac/upgraded-pancake" target="_blank" style="color: lime; text-decoration: none;"><img src="https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png" alt="GitHub Icon" style="height: 20px;"></a></li>
+                <li style="float: left; margin-right: 10px;"><a href="#about" style="color: lime; text-decoration: none;">About</a></li>
+            </ul>
+        </nav>
+    </header>
     <footer id="footer" style="position: fixed; left: 0; bottom: 0; width: 100%; background-color: black; color: lime; text-align: center; padding: 10px; font-family: monospace; ">
     </footer>
     <script>
         var texts = [
-            "Welcome to the future of backend development! 🚀" ,
-            "Our platform simplifies TLS/SSL certificate management, allowing you to focus on what you do best - coding. 💻" ,
-            "Say goodbye to tedious manual processes and hello to streamlined, secure connections." ,
-            "👋 Join our diverse community of developers from around the world who are revolutionizing the tech world. 🌍" ,
-            "Let's code a safer future, together. 🤝",
+            "Unlock Seamless Integration and SSL/TLS Management with Certeef 🚀" ,
+            "Empower developers with unparalleled control and visibility into SSL/TLS certificates on your server using Certeef", 
+            "Our API-driven solution transforms the way you interact with OpenSSL commands, providing secure and efficient access to critical certificate information." ,
+            "Key Features:",
+
+            "1. Real-time Insights: Retrieve instant, real-time results of OpenSSL commands executed on your server, enabling developers to monitor and troubleshoot SSL/TLS configurations effortlessly.",
+            "2.  Developer-Friendly APIs: Seamlessly integrate SSL/TLS management into your workflows with our intuitive RESTful APIs. Simplify certificate operations and enhance productivity.",
+            "3.  Secure Collaboration: Facilitate secure collaboration by granting developers access to OpenSSL command results without compromising server integrity. Ensure seamless communication and troubleshooting.",
+            "4.  Comprehensive SSL/TLS Oversight: Gain a holistic view of SSL/TLS certificates, from detailed certificate information to validation and renewal status. Streamline certificate management with ease.",
+            "5.  Customized Notifications: Receive alerts and notifications for critical SSL/TLS events, ensuring proactive identification and resolution of potential issues.",
+            "Benefits:",
+            "- Efficiency: Save valuable development time with a streamlined process for accessing OpenSSL command results programmatically.",
+            "- Security: Enhance security by providing developers with controlled access to certificate data, minimizing potential vulnerabilities.",
+            "- Reliability: Ensure the reliability of SSL/TLS configurations with real-time insights, empowering developers to make informed decisions.",
+            "- Scalability: Scale your SSL/TLS management effortlessly as your infrastructure grows, supported by robust API capabilities.",
+            "- Transform the way you manage SSL/TLS certificates. Try [Your Product Name] today and elevate your development workflow."
+
+            "[Try for Free / Learn More]"
             "made in 🗼 with ❤️ in December 2023 🎅",
         ]; 
 // This array contains the texts that will be displayed on the screen.
@@ -139,12 +168,31 @@
         }
 
         function addCharacterToFooter() {
-            if (index < texts[texts.length - 1].length) {
+        if (index < texts[texts.length - 1].length) {
+            let currentText = texts[texts.length - 1].substring(index, index + 11);
+            if (currentText === "Try for Free") {
+                footer.innerHTML += '<a href="#" onclick="tryForFree(); return false;" style="text-decoration: underline;">' + currentText + '</a>';
+                index += 11;
+            } else if (currentText === "Learn More") {
+                footer.innerHTML += '<a href="#" onclick="learnMore(); return false;" style="text-decoration: underline;">' + currentText + '</a>';
+                index += 9;
+            } else {
                 footer.textContent += texts[texts.length - 1][index];
                 index++;
-                setTimeout(addCharacterToFooter, delay);
             }
-        }        
+            setTimeout(addCharacterToFooter, delay);
+        }
+}   
+
+        function tryForFree() {
+            // Insérez ici le code à exécuter lorsque l'utilisateur clique sur "Try for Free"
+            console.log("Try for Free clicked");
+        }
+
+        function learnMore() {
+            // Insérez ici le code à exécuter lorsque l'utilisateur clique sur "Learn More"
+            console.log("Learn More clicked");
+        }
 
         addCharacter();
     </script>
