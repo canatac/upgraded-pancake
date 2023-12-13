@@ -33,19 +33,26 @@
                 font-size: 14px;
             }
         }
-
         @media (min-width: 601px) {
             body {
                 font-size: 18px;
             }
         }
+        @keyframes blink {
+            0% {opacity: 1;}
+            50% {opacity: 0;}
+            100% {opacity: 1;}
+        }
+        .prompt {
+            animation: blink 1s infinite;
+        }
+        .clickable {
+            text-decoration: underline;
+            cursor: pointer;
+        }
     </style>
 </head>
 <body>
-    <pre id="title">
-               
-    </pre>
-
     <header style="display: flex; justify-content: space-between; align-items: center; background-color: black; color: lime; padding: 10px; font-family: monospace;">
         <pre style="margin: 0;">
             ::::::::  :::::::::: ::::::::: ::::::::::: :::::::::: :::::::::: :::::::::: 
@@ -72,23 +79,29 @@
             "Unlock Seamless Integration and SSL/TLS Management with Certeef 🚀" ,
             "Empower developers with unparalleled control and visibility into SSL/TLS certificates on your server using Certeef", 
             "Our API-driven solution transforms the way you interact with OpenSSL commands, providing secure and efficient access to critical certificate information." ,
-            "Key Features:",
-
+        ]; 
+        var clickables = [
+            "Try for Free",
+            " | ",
+            "Learn More"
+        ];
+        var moreTexts = [
+        "Key Features:",
             "1. Real-time Insights: Retrieve instant, real-time results of OpenSSL commands executed on your server, enabling developers to monitor and troubleshoot SSL/TLS configurations effortlessly.",
             "2.  Developer-Friendly APIs: Seamlessly integrate SSL/TLS management into your workflows with our intuitive RESTful APIs. Simplify certificate operations and enhance productivity.",
             "3.  Secure Collaboration: Facilitate secure collaboration by granting developers access to OpenSSL command results without compromising server integrity. Ensure seamless communication and troubleshooting.",
             "4.  Comprehensive SSL/TLS Oversight: Gain a holistic view of SSL/TLS certificates, from detailed certificate information to validation and renewal status. Streamline certificate management with ease.",
             "5.  Customized Notifications: Receive alerts and notifications for critical SSL/TLS events, ensuring proactive identification and resolution of potential issues.",
-            "Benefits:",
+        "Benefits:",
             "- Efficiency: Save valuable development time with a streamlined process for accessing OpenSSL command results programmatically.",
             "- Security: Enhance security by providing developers with controlled access to certificate data, minimizing potential vulnerabilities.",
             "- Reliability: Ensure the reliability of SSL/TLS configurations with real-time insights, empowering developers to make informed decisions.",
             "- Scalability: Scale your SSL/TLS management effortlessly as your infrastructure grows, supported by robust API capabilities.",
-            "- Transform the way you manage SSL/TLS certificates. Try [Your Product Name] today and elevate your development workflow.",
-
-            "[Try for Free / Learn More]",
-            "made in 🗼 with ❤️ in December 2023 🎅",
-        ]; 
+            "- Transform the way you manage SSL/TLS certificates. Try Certeef today and elevate your development workflow.",
+        ]
+        var footerText = [
+            "made in 🗼 with ❤️ in December 2023 🎅"
+        ] 
 // This array contains the texts that will be displayed on the screen.
 // Each element of the array represents a separate paragraph.
 
@@ -117,22 +130,32 @@
 // This is the maximum length of a line. 
 // When lineLength reaches this value, the text moves to the next line.        
 
+        var lokum = [];
+
+        var moreDetailToDisplay = false;
+        var absent = true;
+
         function handleEnterKey(event) {
             if (event.key === 'Enter') {
                 isWaitingForEnter = false;
-                //container.textContent += '\n';
-				container.textContent += '\n$ ';
+                container.innerHTML = container.innerHTML.replace("<span class=\"prompt\">|</span>", "");
+                container.innerHTML = container.innerHTML.replace("(Press 'Enter' to continue)", "");
+                container.innerHTML = container.innerHTML.replace(" or simply ", "");
+                container.innerHTML = container.innerHTML.replace("Try now", "");
+
+				container.textContent += '$ ';
                 window.removeEventListener('keydown', handleEnterKey);
 				addCharacter();
             }
         }
 
-        function addCharacter() {
+        function addCharacter(callback) {
+
 		    if (isWaitingForEnter) return;
-            var char = texts[textIndex][index];
+            var char = lokum[textIndex][index];
         // This is the maximum length of a line. 
         // When lineLength reaches this value, the text moves to the next line.
-            container.textContent += texts[textIndex][index];
+            container.textContent += lokum[textIndex][index];
             index++;
             lineLength++;
             if (char === '\n') {
@@ -147,79 +170,111 @@
                 container.textContent += '\\\n > ';
                 lineLength = 0;
             }
-            if (index < texts[textIndex].length) {
+            if (index < lokum[textIndex].length) {
         // If the current character index is less than the length of the current text, 
         // it schedules the next character to be added after a delay.
                 setTimeout(addCharacter, delay);
-            } else if (textIndex < texts.length - 1) {
+            } else if (textIndex < lokum.length - 1) {
         // If the current text index is less than the total number of texts, 
         // it adds a newline and a '$ ' to the text content to start a new paragraph, 
         // and resets the character index, the text index, and the line length.
-		        container.innerHTML += "'Enter' to continue <span class='prompt'>|</span>";
+                container.innerHTML += "<span class='prompt'>|</span><span>\n(Press 'Enter' to continue)</span>";
                 isWaitingForEnter = true;
                 window.addEventListener('keydown', handleEnterKey);
-				
-                
+				if (moreDetailToDisplay) addClickables();
+
 				index = 0;
                 textIndex++;
                 lineLength = 0;
-                if (textIndex === texts.length - 1) {
-                    addCharacterToFooter();
-                    footer.textContent = container.textContent.split('\n').pop();
-                    container.textContent = container.textContent.split('\n').slice(0, -1).join('\n') + '\n$ ';
-                    setTimeout(removeCharacter, delay);
-                }else {
-                    setTimeout(addCharacter, delay);
-                }
-            }else  {
-                    removeCharacter();
-            }
-        }
-
-        function removeCharacter() {
-            if (footer.textContent.length > 0) {
-                footer.textContent = footer.textContent.slice(0, -1);
-                setTimeout(removeCharacter, delay);
+                setTimeout(addCharacter, delay);
+                
+            }else if (callback) {
+                callback();
             } else {
-                index = 0;
-                setTimeout(addCharacterToFooter, delay);
+                if (!moreDetailToDisplay){
+                    container.innerHTML += "<span class='prompt'>|</span><span>\n</span>";
+                    isWaitingForEnter = false;
+                    addClickables();
+                    if (absent) addCharacterToFooter();
+                }
+            } 
+        }        
+
+        // Fonction pour ajouter les éléments cliquables
+        function addClickables() {
+            isWaitingForEnter = false;
+            
+            // Add a 'Try now' link to each message in 'moreTexts[]'
+            if (moreDetailToDisplay){
+                var simply = document.createElement('span');
+                simply.textContent = ' or simply ';
+
+                var tryNow = document.createElement('span');
+                tryNow.textContent = 'Try now';
+                tryNow.className = 'clickable';
+                tryNow.onclick = function() {
+                    // Code to handle the 'Try now' click...
+                };
+                container.appendChild(simply);
+                container.appendChild(tryNow);
+                isWaitingForEnter = true;
+
+                return;
             }
+
+            clickables.forEach(function(clickable) {
+            var span = document.createElement('span');
+            span.textContent = clickable;
+            span.className = 'clickable';
+            span.onclick = function() {
+                if (clickable === "Learn More") {
+                    lokum = [];
+                    for (var i = 0; i < moreTexts.length; i++) {  
+                        lokum.push(moreTexts[i]);
+                    }
+                    container.textContent = '\n$ ';
+                    moreDetailToDisplay = true;
+                    textIndex = 0;
+                    index = 0;
+                    addCharacter();
+                }
+            };
+                container.appendChild(span);
+            });
+
+            return;
         }
 
         function addCharacterToFooter() {
-        if (index < texts[texts.length - 1].length) {
-            let currentText = texts[texts.length - 1].substring(index, index + 11);
-            if (texts[texts.length - 1][index] === '\n') {
-                footer.innerHTML += "'Enter' to continue <span class='prompt'>|</span>";
-                isWaitingForEnter = true;
-                window.addEventListener('keydown', handleEnterKey);
-            }
-            if (currentText === "Try for Free") {
-                footer.innerHTML += '<a href="#" onclick="tryForFree(); return false;" style="text-decoration: underline;">' + currentText + '</a>';
-                index += 11;
-            } else if (currentText === "Learn More") {
-                footer.innerHTML += '<a href="#" onclick="learnMore(); return false;" style="text-decoration: underline;">' + currentText + '</a>';
-                index += 9;
-            } else {
-                footer.textContent += texts[texts.length - 1][index];
-                index++;
-            }
-            setTimeout(addCharacterToFooter, delay);
-        }
-}   
+            // Initialisation des variables
+            var index = 0;
+            var delay = 50; // Vous pouvez ajuster ce délai selon vos besoins
+            var footer = document.getElementById('footer'); // Assurez-vous que l'élément avec l'ID 'footer' existe dans votre HTML
 
-        function tryForFree() {
-            // Insérez ici le code à exécuter lorsque l'utilisateur clique sur "Try for Free"
-            console.log("Try for Free clicked");
-        }
+            // Fonction interne pour ajouter un caractère à la fois
+            function addCharacter() {
+                if (index < footerText[0].length) {
+                    footer.textContent += footerText[0][index];
+                    index++;
+                    setTimeout(addCharacter, delay);
+                }
+                absent = false;
+            }
 
-        function learnMore() {
-            // Insérez ici le code à exécuter lorsque l'utilisateur clique sur "Learn More"
-            console.log("Learn More clicked");
+            // Commence à ajouter des caractères
+            addCharacter();
         }
 		
+        var index = 0;
+        var delay = 50; 
+
 		isWaitingForEnter = false;
+        for (var i = 0; i < texts.length; i++) {
+            lokum.push(texts[i]);
+        }
         addCharacter();
+
+
     </script>
 </body>
 
