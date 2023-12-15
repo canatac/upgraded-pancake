@@ -1,5 +1,5 @@
 import * as functions from './functions.js';
-import { initializeDOM, initializeMyLokum, debugLog } from './globals.js';
+import { initializeDOM, initializeMyLokum, debugLog } from './global.js';
 import {loadTexts, footerText} from './contentTexts.js';
 
 /////////////////////////////////////////////////////////////////
