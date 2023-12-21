@@ -54,4 +54,4 @@ jobs:
             CI=true docker stop certtool
             CI=true docker system prune -af
             CI=true docker pull canatac/certtool:latest
-            CI=true docker run --name=certtool -d -p 80:80 canatac/certtool:latest
+            CI=true docker run --name=certtool -d -p 8000:8000 canatac/certtool:latest

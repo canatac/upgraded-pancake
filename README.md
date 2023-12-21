@@ -22,6 +22,19 @@ The application starts a server on port 80. It provides the following routes:
 
 Each route returns a JSON response.
 
+## How to subscribe to the service
+
+```mermaid
+sequenceDiagram
+    participant Developer as Developer
+    participant Server as Server
+    Developer->>Server: POST /subscribe (email)
+    Server-->>Developer: Send email with 6-digit code
+    Developer->>Server: POST /verify (6-digit code)
+    Server-->>Developer: Return API KEY
+```
+
+
 ## Tests
 
 To run the tests for this project, use the following command:
