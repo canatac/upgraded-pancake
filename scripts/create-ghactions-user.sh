@@ -20,3 +20,14 @@ cat $HOME/.ssh/id_rsa.pub >> $HOME/.ssh/authorized_keys
 
 # Afficher la clé privée
 cat $HOME/.ssh/id_rsa
+
+# Install and start Docker
+sudo yum install docker
+sudo systemctl start docker
+sudo usermod -aG docker $USER_NAME
+
+# Start Docker on boot
+sudo systemctl enable docker
+
+sudo systemctl enable docker.service
+sudo systemctl enable containerd.service
