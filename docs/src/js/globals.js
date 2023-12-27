@@ -8,6 +8,7 @@ export function debugLog(message) {
 }
 
 export let maxLineLength = 80;
+export let typingSpeed = 50;
 
 export let lokum = [];
 export function setLokum(value){

@@ -54,7 +54,7 @@ export async function handleEnd() {
     globals.container.innerHTML += "<span class='prompt'>|</span><span>\n</span>";
     globals.IsWaitingForEnterState(false);
     await addClickables();
-    if (absent) {await addCharacterToFooter()};
+    if (absent) {await addCharacterToFooter(globals.footer.textContent)};
 }
 
 function handleEnterKey(event) {
