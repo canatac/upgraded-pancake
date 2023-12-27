@@ -64,4 +64,4 @@ jobs:
             CI=true docker stop certtool
             CI=true docker system prune -af
             CI=true docker pull canatac/certtool:latest
-            CI=true docker run --name=certtool -d -p 8000:8000 canatac/certtool:latest
+            CI=true docker run --name=certtool -d -p 8000:8000 -e SMTP_HOST=$SMTP_HOST -e SMTP_PORT=$SMTP_PORT -e SMTP_USERNAME=$SMTP_USERNAME -e SMTP_PASSWORD=$SMTP_PASSWORD -e NOREPLY_EMAIL_ADDRESS=$NOREPLY_EMAIL_ADDRESS -e VERIFY_URL=$VERIFY_URL canatac/certtool:latest
