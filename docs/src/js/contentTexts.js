@@ -1,42 +1,16 @@
-export let texts = [];
+import _main from '../../public/texts/main.js';
+import _clickables from '../../public/texts/clickables.js';
+import _moreTexts from '../../public/texts/moreTexts.js';
+import _footerText from '../../public/texts/footerText.js';
 
-export let clickables = [];
+export let texts = _main.split('\n');
 
-export let moreTexts = [];
+export let clickables = _clickables.split('\n');
 
-export let footerText = [];
+export let moreTexts = _moreTexts.split('\n');
+
+export let footerText = _footerText.split('\n');
 
 export async function loadTexts(){
-    return Promise.all([
-        loadTextFile('./../../docs/public/texts/main.txt')
-        .then(text => {
-            text = text.replace(/\r/g, '');
-            texts = text.split('\n');
-        }),
-        loadTextFile('./../../docs/public/texts/clickables.txt')
-        .then(text => {
-            text = text.replace(/\r/g, '');
-            clickables = text.split('\n');
-        }),
-        loadTextFile('./../../docs/public/texts/moreTexts.txt')
-        .then(text => {
-            text = text.replace(/\r/g, '');
-            moreTexts = text.split('\n');
-        }),
-        loadTextFile('./../../docs/public/texts/footerText.txt')
-        .then(text => {
-            text = text.replace(/\r/g, '');
-            footerText = text.split('\n');
-        })])
-        .catch(error => {
-            console.error('An error occurred:', error);
-        });
-}
-
-async function loadTextFile(filePath) {
-    const response = await fetch(filePath);
-    if (!response.ok) {
-        throw new Error(`An error occurred while loading the file: ${response.statusText}`);
-    }
-    return response.text();
+    return Promise.resolve();
 }
