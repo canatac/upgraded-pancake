@@ -1,5 +1,5 @@
 import * as globals from './globals.js';
-import {debugLog} from './globals.js';
+import { debugLog } from './globals.js';
 import * as handlers from './handlers.js';
 import { clickables, moreTexts, footerText } from './contentTexts.js';
 
@@ -106,10 +106,7 @@ export async function addClickables() {
     }
 
     clickables.forEach(function(clickable) {
-        var span = document.createElement('span');
-        span.textContent = clickable;
-        span.className = 'clickable';
-        span.onclick = function() {
+        var simply = createClickableSpan(clickable,function() {
             if (clickable === "Learn More") {
                 globals.setLokum([]);
                 for (var i = 0; i < moreTexts.length; i++) {  
@@ -121,40 +118,32 @@ export async function addClickables() {
                 globals.setIndex(0);
                 addCharacter();
             }
-        };
-        globals.container.appendChild(span);
+        });
+        globals.container.appendChild(simply);
     });
 
     return;
 }
 
-export async function addCharacterToFooter() {
-    // Initialisation des variables
-    var index = 0;
-    var delay = 50; // Vous pouvez ajuster ce délai selon vos besoins
-
-    // Fonction interne pour ajouter un caractère à la fois
-    function addCharacterBis() {
-        return new Promise((resolve) => {
-            
-            function helper() {
-                if (index < footerText[0].length) {
-                    globals.footer.textContent += footerText[0][index];
-                    index++;
-                    setTimeout(helper, delay);
-                } else {
-                    resolve();
-                }
-            }
-            helper();
+export async function addCharacterToFooter(text) {
+    for (let i = 0; i < text.length; i++) {
+        await new Promise(resolve => {
+            setTimeout(() => {
+                globals.container.textContent += text[i];
+                resolve();
+            }, globals.typingSpeed);
         });
     }
-
-    // Commence à ajouter des caractères
-    let ret = await addCharacterBis();
     return;
 }
 
 // This array contains the texts that will be displayed on the screen.
 // Each element of the array represents a separate paragraph.
 
+function createClickableSpan(clickable, onClick) {
+    var span = document.createElement('span');
+    span.textContent = clickable;
+    span.className = 'clickable';
+    span.addEventListener('click', onClick);
+    return span;
+}
