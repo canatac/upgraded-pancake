@@ -1,6 +1,7 @@
 import {addCharacter, addClickables, addCharacterToFooter} from './functions.js';
 import * as globals from './globals.js';
 import {debugLog} from './globals.js';
+import { footerText } from './contentTexts.js';
 
 var absent = true;
 var delay = 10;
@@ -54,7 +55,9 @@ export async function handleEnd() {
     globals.container.innerHTML += "<span class='prompt'>|</span><span>\n</span>";
     globals.IsWaitingForEnterState(false);
     await addClickables();
-    if (absent) {await addCharacterToFooter(globals.footer.textContent)};
+    if (absent) {
+        await addCharacterToFooter(footerText[0]);
+    }
 }
 
 function handleEnterKey(event) {

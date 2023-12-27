@@ -1,7 +1,7 @@
 import * as globals from './globals.js';
 import { debugLog } from './globals.js';
 import * as handlers from './handlers.js';
-import { clickables, moreTexts, footerText } from './contentTexts.js';
+import { clickables, moreTexts } from './contentTexts.js';
 
 export async function addCharacter() {
     if (globals.isWaitingForEnter) return;
@@ -129,12 +129,11 @@ export async function addCharacterToFooter(text) {
     for (let i = 0; i < text.length; i++) {
         await new Promise(resolve => {
             setTimeout(() => {
-                globals.container.textContent += text[i];
+                globals.footer.textContent += text[i];
                 resolve();
             }, globals.typingSpeed);
         });
     }
-    return;
 }
 
 // This array contains the texts that will be displayed on the screen.

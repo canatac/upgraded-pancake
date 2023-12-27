@@ -8,15 +8,17 @@
 </head>
 <body>
     <header style="display: flex; justify-content: space-between; align-items: flex-start; background-color: black; color: lime; padding: 10px; font-family: monospace;">
-        <pre style="margin: 0; animation: fadeOut 5s;">
-            ::::::::  :::::::::: ::::::::: ::::::::::: :::::::::: :::::::::: :::::::::: 
-            :+:    :+: :+:        :+:    :+:    :+:     :+:        :+:        :+:         
-           +:+        +:+        +:+    +:+    +:+     +:+        +:+        +:+          
-          +#+        +#++:++#   +#++:++#:     +#+     +#++:++#   +#++:++#   :#::+::#      
-         +#+        +#+        +#+    +#+    +#+     +#+        +#+        +#+            
-        #+#    #+# #+#        #+#    #+#    #+#     #+#        #+#        #+#             
-        ########  ########## ###    ###    ###     ########## ########## ###   
-        </pre> 
+        <div id='logo'>
+            <pre style="margin: 0;">
+                ::::::::  :::::::::: ::::::::: ::::::::::: :::::::::: :::::::::: :::::::::: 
+                :+:    :+: :+:        :+:    :+:    :+:     :+:        :+:        :+:         
+               +:+        +:+        +:+    +:+    +:+     +:+        +:+        +:+          
+              +#+        +#++:++#   +#++:++#:     +#+     +#++:++#   +#++:++#   :#::+::#      
+             +#+        +#+        +#+    +#+    +#+     +#+        +#+        +#+            
+            #+#    #+# #+#        #+#    #+#    #+#     #+#        #+#        #+#             
+########  ########## ###    ###    ###     ########## ########## ###   
+            </pre>     
+        </div>
         <nav>
             <ul style="list-style-type: none; margin: 0; padding: 0;display: flex; justify-content: flex-end; align-items: flex-start;">
                 <li style="float: left; margin-right: 10px;"><a href="#docs" style="color: lime; text-decoration: none;">Docs</a></li>
@@ -25,7 +27,7 @@
             </ul>
         </nav>
     </header>
-    <pre id="content" style="animation: smoothScroll 5s linear infinite;">$ </pre>
+    <pre id="content" >$ </pre>
     <footer id="footer" style="position: fixed; left: 0; bottom: 0; width: 100%; background-color: black; color: lime; text-align: center; padding: 10px; font-family: monospace; ">
     </footer>
     <script type="module" src="./src/js/script.js"></script>

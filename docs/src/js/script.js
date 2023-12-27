@@ -9,5 +9,14 @@ document.addEventListener('DOMContentLoaded', async (event) => {
     debugLog('footerText : {}', footerText);
     initializeMyLokum();
     initializeDOM();
-    await functions.addCharacter();
+    setTimeout(async function() {
+        await functions.addCharacter();
+    }, 3000);
+});
+
+window.addEventListener('load', function() {
+    setTimeout(function() {
+        var logo = document.getElementById('logo');
+        logo.classList.add('small');
+    }, 1000);
 });
