@@ -53,12 +53,12 @@ jobs:
           fingerprint: ${{ secrets.SERVER_FINGERPRINT }}
           envs: SMTP_HOST, SMTP_PORT, SMTP_USERNAME, SMTP_PASSWORD, NOREPLY_EMAIL_ADDRESS, VERIFY_URL
           script: |
-            echo "export SMTP_HOST=$SMTP_HOST" >> ~/.bashrc
-            echo "export SMTP_PORT=$SMTP_PORT" >> ~/.bashrc
-            echo "export SMTP_USERNAME=$SMTP_USERNAME" >> ~/.bashrc
-            echo "export SMTP_PASSWORD=$SMTP_PASSWORD" >> ~/.bashrc
-            echo "export NOREPLY_EMAIL_ADDRESS=$NOREPLY_EMAIL_ADDRESS" >> ~/.bashrc
-            echo "export VERIFY_URL=$VERIFY_URL" >> ~/.bashrc
+            echo "export SMTP_HOST=${{secrets.SMTP_HOST}}" >> ~/.bashrc
+            echo "export SMTP_PORT=${{secrets.SMTP_PORT}}" >> ~/.bashrc
+            echo "export SMTP_USERNAME=${{secrets.SMTP_USERNAME}}" >> ~/.bashrc
+            echo "export SMTP_PASSWORD=${{secrets.SMTP_PASSWORD}}" >> ~/.bashrc
+            echo "export NOREPLY_EMAIL_ADDRESS=${{secrets.NOREPLY_EMAIL_ADDRESS}}" >> ~/.bashrc
+            echo "export VERIFY_URL=${{secrets.VERIFY_URL}}" >> ~/.bashrc
             source ~/.bashrc
             CI=true docker login -u ${{ secrets.DOCKER_HUB_USERNAME }} -p ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
             CI=true docker stop certtool
