@@ -8,22 +8,22 @@ export let footerText = [];
 
 export async function loadTexts(){
     return Promise.all([
-        loadTextFile('./../../public/texts/main.txt')
+        loadTextFile('./../../docs/public/texts/main.txt')
         .then(text => {
             text = text.replace(/\r/g, '');
             texts = text.split('\n');
         }),
-        loadTextFile('./../../public/texts/clickables.txt')
+        loadTextFile('./../../docs/public/texts/clickables.txt')
         .then(text => {
             text = text.replace(/\r/g, '');
             clickables = text.split('\n');
         }),
-        loadTextFile('./../../public/texts/moreTexts.txt')
+        loadTextFile('./../../docs/public/texts/moreTexts.txt')
         .then(text => {
             text = text.replace(/\r/g, '');
             moreTexts = text.split('\n');
         }),
-        loadTextFile('./../../public/texts/footerText.txt')
+        loadTextFile('./../../docs/public/texts/footerText.txt')
         .then(text => {
             text = text.replace(/\r/g, '');
             footerText = text.split('\n');
