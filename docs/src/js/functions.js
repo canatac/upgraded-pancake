@@ -96,38 +96,39 @@ export async function addClickables() {
         tryNow.textContent = 'Try now';
         tryNow.className = 'clickable';
         tryNow.onclick = function() {
-            var emailInput = document.createElement('input');
-            emailInput.type = 'email';
-            emailInput.placeholder = 'Your email address';
-            emailInput.style.display = 'none';
+            var emailInput = document.getElementById('emailInput');
+            var subscribeButton = document.getElementById('subscribeButton');
 
-            emailInput.style.backgroundColor = '#282828'; 
-            emailInput.style.color = 'lime'; 
-            emailInput.style.border = 'none'; 
-            emailInput.style.padding = '5px'; 
-            emailInput.style.marginLeft = '10px'; 
-            emailInput.style.fontFamily = 'Courier New';
-
-            var subscribeButton = document.createElement('button');
-            subscribeButton.textContent = 'Subscribe';
-            subscribeButton.style.display = 'none';
-
+            if (!emailInput) {
+                emailInput = document.createElement('input');
+                emailInput.id = 'emailInput';
+                emailInput.type = 'email';
+                emailInput.placeholder = 'Your email address';
+                emailInput.style.display = 'inline-block';
+                emailInput.style.backgroundColor = '#282828'; 
+                emailInput.style.color = 'lime'; 
+                emailInput.style.border = 'none'; 
+                emailInput.style.padding = '5px'; 
+                emailInput.style.marginLeft = '10px'; 
+                emailInput.style.fontFamily = 'Courier New';
+            }
+            if (!subscribeButton) {
+                subscribeButton = document.createElement('subscribeButton');
+                subscribeButton.id = 'subscribeButton';
+                subscribeButton.textContent = 'Subscribe';
+                subscribeButton.style.display = 'inline-block';
+                subscribeButton.style.backgroundColor = '#282828'; 
+                subscribeButton.style.color = 'lime'; 
+                subscribeButton.style.border = 'none'; 
+                subscribeButton.style.padding = '5px'; 
+                subscribeButton.style.marginLeft = '10px'; 
+                subscribeButton.style.fontFamily = 'Courier New'; 
+            }
+            
             globals.container.appendChild(emailInput);
             globals.container.appendChild(subscribeButton);
 
-
-            subscribeButton.style.backgroundColor = '#282828'; 
-            subscribeButton.style.color = 'lime'; 
-            subscribeButton.style.border = 'none'; 
-            subscribeButton.style.padding = '5px'; 
-            subscribeButton.style.marginLeft = '10px'; 
-            subscribeButton.style.fontFamily = 'Courier New'; 
-        
-            
-            emailInput.style.display = 'inline-block';
-            subscribeButton.style.display = 'inline-block';
             emailInput.focus();
-
             emailInput.oninput = function() {
                 // Supprimez le message d'erreur s'il existe
                 var errorDialog = document.getElementById('errorDialog');
@@ -139,15 +140,18 @@ export async function addClickables() {
             subscribeButton.onclick = function() {
                 var emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
                 if (!emailRegex.test(emailInput.value)) {
-                    var errorDialog = document.createElement('div');
-                    errorDialog.id = 'errorDialog'; 
-                    errorDialog.textContent = 'Please enter a valid email address.';
-                    errorDialog.style.backgroundColor = '#282828'; 
-                    errorDialog.style.color = 'red'; 
-                    errorDialog.style.padding = '10px'; 
-                    errorDialog.style.marginTop = '10px'; 
-                    errorDialog.style.fontFamily = 'Courier New'; 
-                    globals.container.appendChild(errorDialog);
+                    var errorDialog = document.getElementById('errorDialog');
+                    if (!errorDialog) {
+                        var errorDialog = document.createElement('div');
+                        errorDialog.id = 'errorDialog'; 
+                        errorDialog.textContent = 'Please enter a valid email address.';
+                        errorDialog.style.backgroundColor = '#282828'; 
+                        errorDialog.style.color = 'red'; 
+                        errorDialog.style.padding = '10px'; 
+                        errorDialog.style.marginTop = '10px'; 
+                        errorDialog.style.fontFamily = 'Courier New'; 
+                        globals.container.appendChild(errorDialog);
+                    }
                     return;
                 }
                 while (globals.container.firstChild) {
@@ -194,36 +198,39 @@ export async function addClickables() {
                 globals.setIndex(0);
                 addCharacter();
             }else if (clickable === "Try for Free") {
-                var emailInput = document.createElement('input');
-                emailInput.type = 'email';
-                emailInput.placeholder = 'Your email address';
-                emailInput.style.display = 'none';
+                var emailInput = document.getElementById('emailInput');
+                var subscribeButton = document.getElementById('subscribeButton');
 
-                emailInput.style.backgroundColor = '#282828'; 
-                emailInput.style.color = 'lime'; 
-                emailInput.style.border = 'none'; 
-                emailInput.style.padding = '5px'; 
-                emailInput.style.marginLeft = '10px'; 
-                emailInput.style.fontFamily = 'Courier New';
-
-                var subscribeButton = document.createElement('button');
-                subscribeButton.textContent = 'Subscribe';
-                subscribeButton.style.display = 'none';
-
+                if (!emailInput) {
+                    emailInput = document.createElement('input');
+                    emailInput.id = 'emailInput';
+                    emailInput.type = 'email';
+                    emailInput.placeholder = 'Your email address';
+                    emailInput.style.display = 'inline-block';
+                    emailInput.style.backgroundColor = '#282828'; 
+                    emailInput.style.color = 'lime'; 
+                    emailInput.style.border = 'none'; 
+                    emailInput.style.padding = '5px'; 
+                    emailInput.style.marginLeft = '10px'; 
+                    emailInput.style.fontFamily = 'Courier New';
+                }
+                if (!subscribeButton) {
+                    subscribeButton = document.createElement('subscribeButton');
+                    subscribeButton.id = 'subscribeButton';
+                    subscribeButton.textContent = 'Subscribe';
+                    subscribeButton.style.display = 'inline-block';
+                    subscribeButton.style.backgroundColor = '#282828'; 
+                    subscribeButton.style.color = 'lime'; 
+                    subscribeButton.style.border = 'none'; 
+                    subscribeButton.style.padding = '5px'; 
+                    subscribeButton.style.marginLeft = '10px'; 
+                    subscribeButton.style.fontFamily = 'Courier New'; 
+                }
+                
                 globals.container.appendChild(emailInput);
                 globals.container.appendChild(subscribeButton);
-                subscribeButton.style.backgroundColor = '#282828'; 
-                subscribeButton.style.color = 'lime'; 
-                subscribeButton.style.border = 'none'; 
-                subscribeButton.style.padding = '5px'; 
-                subscribeButton.style.marginLeft = '10px'; 
-                subscribeButton.style.fontFamily = 'Courier New'; 
-            
-                
-                emailInput.style.display = 'inline-block';
-                subscribeButton.style.display = 'inline-block';
+ 
                 emailInput.focus();
-    
                 emailInput.oninput = function() {
                     // Supprimez le message d'erreur s'il existe
                     var errorDialog = document.getElementById('errorDialog');
@@ -235,15 +242,18 @@ export async function addClickables() {
                 subscribeButton.onclick = function() {
                     var emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
                     if (!emailRegex.test(emailInput.value)) {
-                        var errorDialog = document.createElement('div');
-                        errorDialog.id = 'errorDialog'; 
-                        errorDialog.textContent = 'Please enter a valid email address.';
-                        errorDialog.style.backgroundColor = '#282828'; 
-                        errorDialog.style.color = 'red'; 
-                        errorDialog.style.padding = '10px'; 
-                        errorDialog.style.marginTop = '10px'; 
-                        errorDialog.style.fontFamily = 'Courier New'; 
-                        globals.container.appendChild(errorDialog);
+                        var errorDialog = document.getElementById('errorDialog');
+                        if (!errorDialog) {
+                            var errorDialog = document.createElement('div');
+                            errorDialog.id = 'errorDialog'; 
+                            errorDialog.textContent = 'Please enter a valid email address.';
+                            errorDialog.style.backgroundColor = '#282828'; 
+                            errorDialog.style.color = 'red'; 
+                            errorDialog.style.padding = '10px'; 
+                            errorDialog.style.marginTop = '10px'; 
+                            errorDialog.style.fontFamily = 'Courier New'; 
+                            globals.container.appendChild(errorDialog);
+                        }
                         return;
                     }
                     while (globals.container.firstChild) {
