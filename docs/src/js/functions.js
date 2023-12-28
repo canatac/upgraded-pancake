@@ -152,18 +152,30 @@ export async function addClickables() {
                         errorDialog.style.fontFamily = 'Courier New'; 
                         globals.container.appendChild(errorDialog);
                     }
+
                     return;
                 }
+
+                if (document.getElementById('hono').value) {
+                    while (globals.container.firstChild) {
+                        globals.container.removeChild(globals.container.firstChild);
+                    }
+                    alert('Bot detected!');
+                    return; 
+                }
+
                 while (globals.container.firstChild) {
                     globals.container.removeChild(globals.container.firstChild);
                 }
+
                 var successDialog = document.createElement('div');
                 successDialog.textContent = 'Thank you ' + emailInput.value + '! We send you an email to verify your account.';
                 successDialog.style.backgroundColor = '#282828'; 
                 successDialog.style.color = 'lime'; 
                 successDialog.style.padding = '10px'; 
                 successDialog.style.marginTop = '10px'; 
-                successDialog.style.fontFamily = 'Courier New'; 
+                successDialog.style.fontFamily = 'Courier New';
+
                 globals.container.appendChild(successDialog);        
 
                 window.removeEventListener('keydown', handlers.handleEnterKey);
@@ -256,6 +268,16 @@ export async function addClickables() {
                         }
                         return;
                     }
+
+                    if (document.getElementById('hono').value) {
+                        while (globals.container.firstChild) {
+                            globals.container.removeChild(globals.container.firstChild);
+                        }
+                        alert('Bot detected!');
+                        displayAsciiArtOnBotDetection();
+                        return; 
+                    }
+
                     while (globals.container.firstChild) {
                         globals.container.removeChild(globals.container.firstChild);
                     }
@@ -307,4 +329,30 @@ function createClickableSpan(clickable, onClick) {
     span.className = 'clickable';
     span.addEventListener('click', onClick);
     return span;
+}
+
+function displayAsciiArtOnBotDetection() {
+    // ASCII Art
+    var asciiArt = `
+    ██████   ██████  ████████     ██████  ███████ ████████ ███████  ██████ ████████ ███████ ██████      ██ 
+    ██   ██ ██    ██    ██        ██   ██ ██         ██    ██      ██         ██    ██      ██   ██     ██ 
+    ███████ ██    ██    ██        ██   ██ █████      ██    █████   ██         ██    █████   ██   ██     ██ 
+    ██   ██ ██    ██    ██        ██   ██ ██         ██    ██      ██         ██    ██      ██   ██        
+    ███████  ██████     ██        ██████  ███████    ██    ███████  ██████    ██    ███████ ██████      ██
+    `;
+
+    document.body.innerHTML = '';
+
+    var pre = document.createElement('pre');
+    pre.textContent = asciiArt;
+
+    pre.style.textAlign = 'center';
+    pre.style.position = 'absolute';
+    pre.style.top = '50%';
+    pre.style.left = '50%';
+    pre.style.transform = 'translate(-50%, -50%)';
+    pre.style.fontFamily = 'monospace';
+    pre.style.whiteSpace = 'pre';
+
+    document.body.appendChild(pre);
 }

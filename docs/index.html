@@ -33,10 +33,19 @@
     </header>
     <div id="bodycontent">
         <pre id="content" >$ </pre>
-    </div>    <footer id="footer" style="position: fixed; left: 0; bottom: 0; width: 100%; background-color: black; color: lime; text-align: center; padding: 10px; font-family: monospace; ">
+        <input type="text" name="hono" id="hono" style="display: none;"></input>
+    </div>    
+    <footer id="footer" style="position: fixed; left: 0; bottom: 0; width: 100%; background-color: black; color: lime; text-align: center; padding: 10px; font-family: monospace; ">
     </footer>
     <script type="module" src="./src/js/script.js"></script>
-
+    <script>
+        document.getElementById('bodycontent').addEventListener('submit', function(event) {
+            if (document.getElementById('hono').value) {
+                event.preventDefault(); 
+                alert('Bot detected!'); 
+            }
+        });
+    </script>
 </body>
 
 </html>
