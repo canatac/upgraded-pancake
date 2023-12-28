@@ -11,7 +11,7 @@ document.addEventListener('DOMContentLoaded', async (event) => {
     initializeDOM();
     setTimeout(async function() {
         await functions.addCharacter();
-    }, 3000);
+    }, 5000);
 });
 
 
