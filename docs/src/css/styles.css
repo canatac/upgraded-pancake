@@ -2,7 +2,22 @@ body {
     background-color: black;
     color: lime;
     font-family: monospace;
-    white-space: pre;
+}
+header {
+    position: relative; /* Ajoutez cette ligne */
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    background-color: black;
+    color: lime;
+    padding: 75px;
+    font-family: monospace;
+}
+nav {
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
 }
 footer {
     position: fixed;
@@ -14,6 +29,17 @@ footer {
     text-align: center;
     padding: 10px;
     font-family: monospace;
+}
+#header-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+#bodycontent {
+    margin-top: 50px; 
+}
+nav {
+    display: none; 
 }
 #logo {
     position: absolute;

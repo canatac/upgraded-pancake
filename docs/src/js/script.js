@@ -14,6 +14,17 @@ document.addEventListener('DOMContentLoaded', async (event) => {
     }, 3000);
 });
 
+
+var logo = document.getElementById('logo');
+var menu = document.querySelector('nav');
+var prompt = document.getElementById('content');
+prompt.style.display = 'none';
+
+logo.addEventListener('transitionend', function() {
+    menu.style.display = 'flex';
+    prompt.style.display = 'block';
+});
+
 window.addEventListener('load', function() {
     setTimeout(function() {
         var logo = document.getElementById('logo');
