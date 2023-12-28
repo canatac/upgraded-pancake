@@ -60,7 +60,7 @@ export async function handleEnd() {
     }
 }
 
-function handleEnterKey(event) {
+export function handleEnterKey(event) {
     if (event.key === 'Enter') {
         globals.IsWaitingForEnterState(false);
         globals.container.innerHTML = globals.container.innerHTML.replace("<span class=\"prompt\">|</span>", "");

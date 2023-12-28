@@ -61,6 +61,9 @@ nav {
 #content {
     text-align: left;
 }
+#emailInput:focus {
+    outline: none;
+}
 @media (max-width: 600px) {
     body {
         font-size: 14px;
