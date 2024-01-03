@@ -3,6 +3,7 @@ use lettre::{Message, SmtpTransport, Transport};
 use rocket::serde::json::Json;
 use rocket::serde::{Deserialize, Serialize};
 use uuid::Uuid;
+use reqwest::header::{HeaderMap, HeaderValue, CONTENT_TYPE, AUTHORIZATION};
 
 use rocket::http::Status;
 
@@ -25,35 +26,38 @@ pub struct SubscriptionResponse {
 pub async fn subscribe(subscription_request: Json<SubscriptionRequest>) -> Json<SubscriptionResponse> {
     let id = Uuid::new_v4().to_string();
 
-    // Send verification email
-    let noreply_email_address =
-        std::env::var("NOREPLY_EMAIL_ADDRESS").expect("NOREPLY_EMAIL_ADDRESS is not set");
-    let smtp_username = std::env::var("SMTP_USERNAME").expect("SMTP_USERNAME is not set");
-    let smtp_password = std::env::var("SMTP_PASSWORD").expect("SMTP_PASSWORD is not set");
+    let api_key = std::env::var("API_KEY").expect("API_KEY is not set");
+    let secret_key = std::env::var("SECRET_KEY").expect("SECRET_KEY is not set");
     let smtp_host = std::env::var("SMTP_HOST").expect("SMTP_HOST is not set");
-    let smtp_port = std::env::var("SMTP_PORT").expect("SMTP_PORT is not set");
+
+    let mut headers = HeaderMap::new();
+    headers.insert(CONTENT_TYPE, HeaderValue::from_static("application/json"));
+
+    let noreply_email_address =
+    std::env::var("NOREPLY_EMAIL_ADDRESS").expect("NOREPLY_EMAIL_ADDRESS is not set");
     let verify_url = std::env::var("VERIFY_URL").expect("VERIFY_URL is not set");
 
     let email = Message::builder()
-        .from(noreply_email_address.parse().unwrap())
-        .to(subscription_request.email.parse().unwrap())
-        .subject("Please verify your email")
-        .body(format!(
-            "Please click the following link to verify your email: {}",
-            verify_url
-        ))
-        .unwrap();
+    .from(noreply_email_address.parse().unwrap())
+    .to(subscription_request.email.parse().unwrap())
+    .subject("Please verify your email")
+    .body(format!(
+        "Please click the following link to verify your email: {} and your id is {}",
+        verify_url, id
+    ))
+    .unwrap();
 
-    let creds = Credentials::new(smtp_username.to_string(), smtp_password.to_string());
+    let creds = Credentials::new(api_key, secret_key);
 
     let mailer = SmtpTransport::relay(&smtp_host)
-        .unwrap()
-        .port(smtp_port.parse::<u16>().unwrap())
-        .credentials(creds)
-        .authentication(vec![Mechanism::Plain])
-        .build();
-
-        mailer.send(&email).unwrap();
+    .unwrap()
+    .credentials(creds)
+    .build();
+    
+    match mailer.send(&email) {
+        Ok(_) => println!("Email sent successfully!"),
+        Err(e) => panic!("Could not send email: {:?}", e),
+    }
 
     Json(SubscriptionResponse {
         id,
@@ -61,6 +65,7 @@ pub async fn subscribe(subscription_request: Json<SubscriptionRequest>) -> Json<
         email: subscription_request.email.clone(),
     })
 }
+
 
 #[get("/verify/<id>")]
 pub async fn verify(id: String) -> Status {
