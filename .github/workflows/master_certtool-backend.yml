@@ -53,11 +53,16 @@ jobs:
           fingerprint: ${{ secrets.SERVER_FINGERPRINT }}
           envs: SMTP_HOST, API_KEY, SECRET_KEY, NOREPLY_EMAIL_ADDRESS, VERIFY_URL
           script: |
-            echo "export SMTP_HOST=${{secrets.SMTP_HOST}}" >> ~/.bashrc
-            echo "export API_KEY=${{secrets.API_KEY}}" >> ~/.bashrc
-            echo "export SECRET_KEY=${{secrets.SECRET_KEY}}" >> ~/.bashrc
-            echo "export NOREPLY_EMAIL_ADDRESS=${{secrets.NOREPLY_EMAIL_ADDRESS}}" >> ~/.bashrc
-            echo "export VERIFY_URL=${{secrets.VERIFY_URL}}" >> ~/.bashrc
+            function add_env_var {
+              VAR_NAME=$1
+              VAR_VALUE=$2
+              grep -q "export $VAR_NAME=" ~/.bashrc || echo "export $VAR_NAME=$VAR_VALUE" >> ~/.bashrc
+            }
+            add_env_var "SMTP_HOST" "${{secrets.SMTP_HOST}}"
+            add_env_var "API_KEY" "${{secrets.API_KEY}}"
+            add_env_var "SECRET_KEY" "${{secrets.SECRET_KEY}}"
+            add_env_var "NOREPLY_EMAIL_ADDRESS" "${{secrets.NOREPLY_EMAIL_ADDRESS}}"
+            add_env_var "VERIFY_URL" "${{secrets.VERIFY_URL}}"
             source ~/.bashrc
             CI=true docker login -u ${{ secrets.DOCKER_HUB_USERNAME }} -p ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
             CI=true docker stop certtool
